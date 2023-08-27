@@ -212,8 +212,8 @@ public class SwiftContactsServicePlugin: NSObject, FlutterPlugin, CNContactViewC
         return ""
     }
 
-    func openContactForm() -> [String:Any]? {
-        let contact = CNMutableContact.init()
+    func openContactForm(contact : CNMutableContact) -> [String:Any]? {
+        
         let controller = CNContactViewController.init(forNewContact:contact)
         controller.delegate = self
         DispatchQueue.main.async {
