@@ -81,11 +81,19 @@ public class SwiftContactsServicePlugin: NSObject, FlutterPlugin, CNContactViewC
             }
          case "openContactForm":
             let arguments = call.arguments as! [String:Any]
-              let contact = dictionaryToContact(dictionary: call.arguments["contact"] as! [String : Any])
 
-            localizedLabels = arguments["iOSLocalizedLabels"] as! Bool
+            if let  contact = arguments["contact"] {
+                 localizedLabels = arguments["iOSLocalizedLabels"] as! Bool
             self.result = result
+            _ = openContactForm(contact: dictionaryToContact(dictionary: arguments["contact"] as! [String: Any]))
+            } else {
+                   localizedLabels = arguments["iOSLocalizedLabels"] as! Bool
+            self.result = result
+               let contact = CNMutableContact.init()
             _ = openContactForm(contact: contact)
+            }
+
+         
          case "openExistingContact":
             let arguments = call.arguments as! [String : Any]
             let contact = arguments["contact"] as! [String : Any]

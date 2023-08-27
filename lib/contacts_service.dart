@@ -97,16 +97,26 @@ class ContactsService {
   static Future updateContact(Contact contact) =>
       _channel.invokeMethod('updateContact', Contact._toMap(contact));
 
-  static Future<Contact> openContactForm(Contact contact,
+  static Future<Contact> openContactForm(
       {bool iOSLocalizedLabels = true,
+      Contact? contact,
       bool androidLocalizedLabels = true}) async {
-    dynamic result =
-        await _channel.invokeMethod('openContactForm', <String, dynamic>{
-      'contact': Contact._toMap(contact),
-      'iOSLocalizedLabels': iOSLocalizedLabels,
-      'androidLocalizedLabels': androidLocalizedLabels,
-    });
-    return _handleFormOperation(result);
+    if (contact != null) {
+      dynamic result =
+          await _channel.invokeMethod('openContactForm', <String, dynamic>{
+        'contact': Contact._toMap(contact),
+        'iOSLocalizedLabels': iOSLocalizedLabels,
+        'androidLocalizedLabels': androidLocalizedLabels,
+      });
+      return _handleFormOperation(result);
+    } else {
+      dynamic result =
+          await _channel.invokeMethod('openContactForm', <String, dynamic>{
+        'iOSLocalizedLabels': iOSLocalizedLabels,
+        'androidLocalizedLabels': androidLocalizedLabels,
+      });
+      return _handleFormOperation(result);
+    }
   }
 
   static Future<Contact> openExistingContact(Contact contact,
